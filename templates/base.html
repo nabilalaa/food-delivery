@@ -1,0 +1,29 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="ar">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap"
+			rel="stylesheet"
+		/>
+		<script
+			defer
+			src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"
+		></script>
+
+		{% tailwind_css %}
+	</head>
+	<body x-data="{'isModalOpen': true}" x-on:keydown.escape="isModalOpen=false">
+		{% block content %} {% endblock content %}
+		<script
+			src="https://unpkg.com/htmx.org@2.0.2"
+			integrity="sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ"
+			crossorigin="anonymous"
+		></script>
+	</body>
+</html>

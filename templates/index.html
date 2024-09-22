@@ -1,0 +1,110 @@
+{% extends 'base.html' %} {% block content %}
+<section class="relative">
+	<div id="modal"></div>
+	<div class="container">
+		<h1 class="text-2xl font-bold mb-4 p-4 text-center">اضافة الطلبات</h1>
+		<div class="search flex justify-between items-center relative mb-4">
+			<form class="w-full items-center flex" method="post">
+				{% csrf_token %}
+				<label
+					for="default-search"
+					class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+					>Search</label
+				>
+				<div class="relative w-full">
+					<div
+						class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+					>
+						<svg
+							class="w-4 h-4 text-gray-500 dark:text-gray-400"
+							aria-hidden="true"
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 20 20"
+						>
+							<path
+								stroke="currentColor"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+							/>
+						</svg>
+					</div>
+					<input
+						type="search"
+						id="default-search"
+						name="search"
+						class="text-right block w-full p-4 pl-10 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-mainColor focus:border-mainColor dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+					/>
+				</div>
+				<button
+					type="submit"
+					class="mr-4 text-white bg-orange-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-lg px-4 py-2 dark:bg-blue-600 dark:focus:ring-blue-800"
+				>
+					بحث
+				</button>
+			</form>
+		</div>
+		{{data.name}}
+		<div id="data"></div>
+
+		<div class="items w-full rounded-md border overflow-y-scroll scroll h-96">
+			{% for meal in meals %}
+
+			<div
+				class="flex p-4 justify-between items-center border-b last-of-type:border-0 md:flex-row flex-col"
+			>
+				<div class="info flex">
+					<div class="ml-4">{{ meal.name }}</div>
+					<div>{{ meal.price }} ج.م</div>
+				</div>
+				<div class="flex font-semibold">
+					<button
+						@click="addToCart(meal.id)"
+						class="text-white px-6 py-4 rounded-lg bg-orange-400 hover:bg-orange-600 transition"
+					>
+						اضافة
+					</button>
+					<a
+						hx-get="/getmeal/{{meal.id}}"
+						hx-target="#modal"
+						x-on:click="isModalOpen=true"
+						class="text-white cursor-pointer px-6 py-4 rounded-lg bg-orange-400 hover:bg-orange-600 transition mr-4"
+					>
+						<svg
+							class="w-6 h-6 text-white"
+							aria-hidden="true"
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 20 14"
+						>
+							<g
+								stroke="currentColor"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+							>
+								<path d="M10 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+								<path
+									d="M10 13c4.97 0 9-2.686 9-6s-4.03-6-9-6-9 2.686-9 6 4.03 6 9 6Z"
+								/>
+							</g>
+						</svg>
+					</a>
+				</div>
+			</div>
+			{%empty%}
+			<p class="p-4">لايوجد</p>
+			{% endfor %}
+		</div>
+		<button
+			@click="navigateTo('checkout')"
+			class="max-w-2xl block p-4 m-auto text-white mt-4"
+		>
+			متابعة الطلب
+		</button>
+	</div>
+</section>
+
+{% endblock content %}
