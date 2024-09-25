@@ -1,5 +1,26 @@
 {% extends 'base.html' %} {% block content %}
 <section class="relative">
+	<a
+		href="{%url 'view_cart' %}"
+		class="absolute top-1/2 p-4 bg-orange-600 rounded-xl flex items-center text-white"
+	>
+		<svg
+			class="w-8 h-8 text-white"
+			aria-hidden="true"
+			xmlns="http://www.w3.org/2000/svg"
+			width="24"
+			height="24"
+			fill="currentColor"
+			viewBox="0 0 24 24"
+		>
+			<path
+				fill-rule="evenodd"
+				d="M4 4a1 1 0 0 1 1-1h1.5a1 1 0 0 1 .979.796L7.939 6H19a1 1 0 0 1 .979 1.204l-1.25 6a1 1 0 0 1-.979.796H9.605l.208 1H17a3 3 0 1 1-2.83 2h-2.34a3 3 0 1 1-4.009-1.76L5.686 5H5a1 1 0 0 1-1-1Z"
+				clip-rule="evenodd"
+			/>
+		</svg>
+		<div class="mt-1">{{cart}}</div>
+	</a>
 	<div id="modal"></div>
 	<div class="container">
 		<h1 class="text-2xl font-bold mb-4 p-4 text-center">اضافة الطلبات</h1>
@@ -60,16 +81,17 @@
 					<div>{{ meal.price }} ج.م</div>
 				</div>
 				<div class="flex font-semibold">
-					<button
-						@click="addToCart(meal.id)"
+					<a
+						href="{% url 'add_to_cart' meal.id %}"
 						class="text-white px-6 py-4 rounded-lg bg-orange-400 hover:bg-orange-600 transition"
 					>
 						اضافة
-					</button>
+					</a>
 					<a
 						hx-get="/getmeal/{{meal.id}}"
 						hx-target="#modal"
 						x-on:click="isModalOpen=true"
+						x-cloak
 						class="text-white cursor-pointer px-6 py-4 rounded-lg bg-orange-400 hover:bg-orange-600 transition mr-4"
 					>
 						<svg

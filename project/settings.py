@@ -10,6 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+# import cloudinary.uploader
+# import cloudinary.api
+# import cloudinary
+import cloudinary.api
+import cloudinary.uploader
+import cloudinary
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -44,12 +50,14 @@ INSTALLED_APPS = [
     "foodDelivery",
     "tailwind",
     "theme",
-    'django_browser_reload'
+    'django_browser_reload',
+    'cloudinary_storage',
+    'cloudinary',
+    "accounts"
 ]
 
 MIDDLEWARE = [
     "django_browser_reload.middleware.BrowserReloadMiddleware",
-
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -132,3 +140,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+cloudinary.config(
+    cloud_name="dnru0whph",
+    api_key="275415985338552",
+    api_secret="DKD0v40ucrKTg_y23SC2xNIdSHc"
+)

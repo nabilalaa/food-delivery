@@ -1,12 +1,10 @@
 {% extends 'base.html' %} {% block content %}
 <!-- Modal content -->
 <div
-	id="default-modal"
-	tabindex="-1"
-	aria-hidden="true"
 	class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full bg-orange-50 bg-opacity-45"
 	x-show="isModalOpen"
 	x-cloak
+	x-transition
 >
 	<div
 		class="absolute p-4 w-full max-w-md max-h-full -translate-x-1/2 left-1/2"
@@ -47,16 +45,18 @@
 				</button>
 			</div>
 			<!-- Modal body -->
-			<div class="p-4 md:p-5 space-y-4">
+			<div class="p-4 md:p-5">
 				<p class="text-base leading-relaxed dark:text-gray-400">
 					{{meal.description}}
 				</p>
-				<p class="text-base leading-relaxed dark:text-gray-400">
+				<p class="text-base leading-relaxed dark:text-gray-400 mt-4">
 					السعر: {{meal.price}}
 				</p>
+
 				<img
-					src="https://img.freepik.com/free-photo/ingredients-grilled-wood-flame-plate-generative-ai_188544-8881.jpg"
-					class="w-full h-[200px] object-cover"
+					src="{{meal.image.url}}"
+					alt="{{meal.name}}"
+					class="w-full h-[300px] object-cover"
 				/>
 			</div>
 		</div>
