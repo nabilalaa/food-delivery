@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-(v8*+f8+)8!ke6w&pf-%kr9hh%y6b&2787z)cwzzh%68i^mcgu
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "certain-alene-nabil-e34f711a.koyeb.app"]
 
 INTERNAL_IPS = [
     "127.0.0.1",
@@ -59,6 +59,8 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django_browser_reload.middleware.BrowserReloadMiddleware",
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -66,6 +68,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 ROOT_URLCONF = 'project.urls'
 
