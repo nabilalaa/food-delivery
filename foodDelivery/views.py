@@ -8,10 +8,14 @@ from .models import *
 
 
 def index(request):
-
+    print(request.GET)
+    category = request.POST.get("category")
     search = request.POST.get("search")
     if search:
         meals = Meal.objects.filter(name__icontains=search)
+
+    elif category:
+        meals = Meal.objects.filter(category__name=category)
 
     else:
         meals = Meal.objects.all()
@@ -24,7 +28,8 @@ def index(request):
         return redirect("login")
     context = {
         "meals": meals,
-        "cart": cart_items_length
+        "cart": cart_items_length,
+        "categories": Category.objects.all()
 
     }
 
@@ -33,13 +38,21 @@ def index(request):
 
 def getMeal(request, id):
     meal = Meal.objects.get(id=id)
+    print(meal)
     context = {
         "meal": meal
     }
     return render(request, "modal.html", context)
 
 
+def category(request):
+    print(request)
+    # meals = Meal.objects.filter(category__name=category)
+    return render(request, "index.html")
+
+
 def view_cart(request):
+
     if request.user != AnonymousUser():
 
         cart_items = CartItem.objects.filter(user=request.user)
@@ -63,6 +76,26 @@ def add_to_cart(request, meal_id):
         return redirect('home')
     else:
         return redirect("login")
+
+
+def handelCart(request, meal_id):
+    product = Meal.objects.get(id=meal_id)
+    quantity = request.POST.get("quantity")
+
+    if request.user != AnonymousUser():
+
+        cart_item, created = CartItem.objects.get_or_create(product=product,
+                                                            user=request.user)
+        cart_item.quantity = quantity
+        cart_item.save()
+
+        cart_items = CartItem.objects.filter(user=request.user)
+        total_price = sum(item.product.price *
+                          item.quantity for item in cart_items)
+    else:
+        return redirect("login")
+
+    return render(request, 'cart.html', {'cart_items': cart_items, 'total_price': total_price})
 
 
 def remove_from_cart(request, item_id):

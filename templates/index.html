@@ -24,7 +24,7 @@
 	<div id="modal"></div>
 	<div class="container">
 		<h1 class="text-2xl font-bold mb-4 p-4 text-center">اضافة الطلبات</h1>
-		<div class="search flex justify-between items-center relative mb-4">
+		<div class="search flex justify-between gap-5 items-center relative mb-4">
 			<form class="w-full items-center flex" method="post">
 				{% csrf_token %}
 				<label
@@ -54,27 +54,43 @@
 					</div>
 					<input
 						type="search"
+						hx-post="{%url 'home'%}"
+						hx-target="body"
+						hx-trigger="change"
 						id="default-search"
 						name="search"
 						class="text-right block w-full p-4 pl-10 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-mainColor focus:border-mainColor dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
 					/>
 				</div>
 				<button
-					type="submit"
-					class="mr-4 text-white bg-orange-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-lg px-4 py-2 dark:bg-blue-600 dark:focus:ring-blue-800"
+					type="button"
+					class="mx-4 text-white bg-orange-400 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-lg px-4 py-2 dark:bg-orange-600 dark:focus:ring-orange-800"
 				>
 					بحث
 				</button>
+
+				<select
+					class="bg-orange-50 border border-orange-300 text-orange-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-64 p-2.5 dark:bg-orange-700 dark:border-orange-600 dark:placeholder-orange-400 dark:text-white dark:focus:ring-orange-500 dark:focus:border-orange-500 text-left"
+					name="category"
+					hx-post="{%url 'home'%}"
+					hx-target="body"
+					hx-trigger="change"
+				>
+					<option selected disabled>التصنيفات</option>
+					{% for category in categories %}
+
+					<option value="{{category.name}}">{{category.name}}</option>
+
+					{% endfor %}
+				</select>
 			</form>
 		</div>
-		{{data.name}}
-		<div id="data"></div>
 
 		<div class="items w-full rounded-md border overflow-y-scroll scroll h-96">
 			{% for meal in meals %}
 
 			<div
-				class="flex p-4 justify-between items-center border-b last-of-type:border-0 md:flex-row flex-col"
+				class="item flex p-4 justify-between items-center border-b last-of-type:border-0 md:flex-row flex-col"
 			>
 				<div class="info flex">
 					<div class="ml-4">{{ meal.name }}</div>
@@ -120,9 +136,9 @@
 			<p class="p-4">لايوجد</p>
 			{% endfor %}
 		</div>
+		{{sorted}}
 		<button
-			@click="navigateTo('checkout')"
-			class="max-w-2xl block p-4 m-auto text-white mt-4"
+			class="max-w-2xl block p-4 m-auto text-white bg-orange-400 rounded-lg mt-4"
 		>
 			متابعة الطلب
 		</button>
