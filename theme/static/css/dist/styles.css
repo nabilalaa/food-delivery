@@ -1817,6 +1817,10 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
+select.decorated option:hover {
+  box-shadow: 0 0 10px 100px #a87618 inset;
+}
+
 .last-of-type\:border-0:last-of-type {
   border-width: 0px;
 }

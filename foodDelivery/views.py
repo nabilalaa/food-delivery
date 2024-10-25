@@ -37,17 +37,10 @@ def index(request):
 
 def getMeal(request, id):
     meal = Meal.objects.get(id=id)
-    print(meal)
     context = {
         "meal": meal
     }
     return render(request, "modal.html", context)
-
-
-def category(request):
-    print(request)
-    # meals = Meal.objects.filter(category__name=category)
-    return render(request, "index.html")
 
 
 def view_cart(request):

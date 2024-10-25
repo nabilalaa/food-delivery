@@ -30,3 +30,7 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
 	-moz-appearance: textfield;
 }
+
+select.decorated option:hover {
+	box-shadow: 0 0 10px 100px #a87618 inset;
+}
