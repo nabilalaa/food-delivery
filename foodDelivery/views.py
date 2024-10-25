@@ -8,7 +8,6 @@ from .models import *
 
 
 def index(request):
-    print(request.GET)
     category = request.POST.get("category")
     search = request.POST.get("search")
     if search:
@@ -55,7 +54,8 @@ def view_cart(request):
 
     if request.user != AnonymousUser():
 
-        cart_items = CartItem.objects.filter(user=request.user)
+        cart_items = CartItem.objects.filter(
+            user=request.user).order_by("product__name")
         total_price = sum(item.product.price *
                           item.quantity for item in cart_items)
     else:
@@ -81,7 +81,7 @@ def add_to_cart(request, meal_id):
 def handelCart(request, meal_id):
     product = Meal.objects.get(id=meal_id)
     quantity = request.POST.get("quantity")
-
+    print(quantity)
     if request.user != AnonymousUser():
 
         cart_item, created = CartItem.objects.get_or_create(product=product,
@@ -89,9 +89,11 @@ def handelCart(request, meal_id):
         cart_item.quantity = quantity
         cart_item.save()
 
-        cart_items = CartItem.objects.filter(user=request.user)
+        cart_items = CartItem.objects.filter(
+            user=request.user).order_by("product__name")
         total_price = sum(item.product.price *
                           item.quantity for item in cart_items)
+
     else:
         return redirect("login")
 

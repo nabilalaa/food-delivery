@@ -92,5 +92,10 @@
 			integrity="sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ"
 			crossorigin="anonymous"
 		></script>
+		<script>
+			document.body.addEventListener("htmx:configRequest", function (event) {
+				event.detail.parameters["X-CSRFToken"] = "{{csrf_token}}"; // add a new parameter into the mix
+			});
+		</script>
 	</body>
 </html>
