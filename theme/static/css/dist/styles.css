@@ -856,6 +856,42 @@ select {
   top: 65%;
 }
 
+.right-1 {
+  right: 0.25rem;
+}
+
+.right-10 {
+  right: 2.5rem;
+}
+
+.left-3 {
+  left: 0.75rem;
+}
+
+.left-1 {
+  left: 0.25rem;
+}
+
+.-left-1 {
+  left: -0.25rem;
+}
+
+.-left-2 {
+  left: -0.5rem;
+}
+
+.-left-3 {
+  left: -0.75rem;
+}
+
+.-left-4 {
+  left: -1rem;
+}
+
+.-left-5 {
+  left: -1.25rem;
+}
+
 .z-10 {
   z-index: 10;
 }
@@ -1983,10 +2019,6 @@ select.decorated option:hover {
 
   .md\:mt-0 {
     margin-top: 0px;
-  }
-
-  .md\:h-screen {
-    height: 100vh;
   }
 
   .md\:w-32 {
