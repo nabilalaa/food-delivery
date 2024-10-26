@@ -1027,6 +1027,10 @@ select {
   height: auto;
 }
 
+.h-screen {
+  height: 100vh;
+}
+
 .max-h-full {
   max-height: 100%;
 }

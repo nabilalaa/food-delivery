@@ -68,7 +68,6 @@
 				>
 					بحث
 				</button>
-
 				<select
 					class="bg-orange-50 border border-orange-300 text-orange-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-64 p-2.5 dark:bg-orange-700 dark:border-orange-600 dark:placeholder-orange-400 dark:text-white dark:focus:ring-orange-500 dark:focus:border-orange-500 text-left"
 					name="category"
@@ -130,10 +129,10 @@
 						اضافة
 					</a>
 					<a
-						hx-get="/getmeal/{{meal.id}}"
+						hx-get="{% url 'getMeal' meal.id %}"
 						hx-target="#modal"
 						x-on:click="isModalOpen=true"
-						hx-indicator=".loading"
+						hx-indicator="#loading"
 						x-cloak
 						class="text-white cursor-pointer px-6 py-4 rounded-lg bg-orange-400 hover:bg-orange-600 transition mr-4"
 					>
