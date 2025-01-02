@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block content %}
+{% extends "base.html" %} {% block content %}
 <section class="relative">
 	<a
 		href="{%url 'view_cart' %}"
@@ -71,14 +71,14 @@
 				<select
 					class="bg-orange-50 border border-orange-300 text-orange-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-64 p-2.5 dark:bg-orange-700 dark:border-orange-600 dark:placeholder-orange-400 dark:text-white dark:focus:ring-orange-500 dark:focus:border-orange-500 text-left"
 					name="category"
-					hx-post="{%url 'home'%}"
+					hx-post="{% url 'home' %}"
 					hx-target="body"
 					hx-trigger="change"
 				>
 					<option selected disabled>التصنيفات</option>
 					{% for category in categories %}
 
-					<option value="{{category.name}}">{{category.name}}</option>
+					<option value=" {{ category.name }} ">{{ category.name }}</option>
 
 					{% endfor %}
 				</select>
@@ -158,7 +158,7 @@
 					</a>
 				</div>
 			</div>
-			{%empty%}
+			{% empty %}
 			<p class="p-4">لايوجد</p>
 			{% endfor %}
 		</div>

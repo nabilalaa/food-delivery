@@ -15,16 +15,21 @@ def register(request):
     password = request.POST.get("password")
     confirm_password = request.POST.get("confirm-password")
 
-    if request.method == "POST":
-        if password == confirm_password:
-            User.objects.create_user(
-                username=username, email=email, password=password)
-            messages.success(
-                request, message="register has been sucessfully")
-            redirect("login")
+    try:
+        if request.method == "POST":
 
-        else:
-            messages.error(request, message="somthing wrong")
+            if password == confirm_password and User.DoesNotExist:
+                User.objects.create_user(
+                    username=username, email=email, password=password)
+                messages.success(
+                    request, message="register has been sucessfully")
+                redirect("login")
+
+            else:
+                messages.error(request, message="somthing wrong")
+
+    except:
+        messages.error(request, message="username or email is exist ")
 
     return render(request, "register.html")
 

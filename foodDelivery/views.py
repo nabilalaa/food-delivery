@@ -2,8 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.http import JsonResponse
 from django.core.serializers import serialize
 from django.contrib.auth.models import AnonymousUser
-
-
+from .forms import CheckoutForm
+from django.contrib import messages
 from .models import *
 
 
@@ -74,7 +74,6 @@ def add_to_cart(request, meal_id):
 def handelCart(request, meal_id):
     product = Meal.objects.get(id=meal_id)
     quantity = request.POST.get("quantity")
-    print(quantity)
     if request.user != AnonymousUser():
 
         cart_item, created = CartItem.objects.get_or_create(product=product,
@@ -97,3 +96,29 @@ def remove_from_cart(request, item_id):
     cart_item = CartItem.objects.get(id=item_id)
     cart_item.delete()
     return redirect('view_cart')
+
+
+def checkout(request):
+    cart_items = CartItem.objects.filter(
+        user=request.user).order_by("product__name")
+    total_price = sum(item.product.price *
+                      item.quantity for item in cart_items)
+
+    if request.method == "POST":
+        print(request.POST)
+        form = CheckoutForm(request.POST)
+
+        if form.is_valid():
+            Order.objects.create(
+                name=form.cleaned_data["name"], address=form.cleaned_data["address"],
+                city=form.cleaned_data["city"])
+            messages.success(request, "Hello world.")
+        else:
+            print("error")
+
+    context = {
+        "form": CheckoutForm,
+        "orders": CartItem.objects.filter(user=request.user),
+        "total": total_price
+    }
+    return render(request, "checkout.html", context)

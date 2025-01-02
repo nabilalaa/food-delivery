@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block content %}
+ 
+    {% load widget_tweaks %}
+
+    <section class="p-3 bg-[#f4eec7] m-2 rounded">
+        <router-link class="cart" to="cart">
+        <span class="icon-shopping-cart"></span>
+        </router-link>
+
+	
+        <div class="checkout">
+	
+            <form method="POST">
+                <div>
+ 
+ 
+                    {% if messages %}
+                        {% for message in messages %}
+                            {{ message }}
+
+                        {% endfor %}
+                    {% endif %}
+ 
+ 
+ 
+ 
+                </div>
+                {% csrf_token %}
+                {{ form.name.label }} {{ form.name|add_class:"input-style" }}
+                {{ form.address.label }}  {% render_field form.address type="text" class="input-style" %}
+                {{ form.city.label }}  {% render_field form.city type="text" class="input-style" %}
+                {{ form.phone.label }} {% render_field form.phone type="text" class="input-style" %}
+                {{ form.email.label }} {% render_field form.email type="text" class="input-style" %}
+                {{ form.notes.label }} {% render_field form.notes type="" col="10" row="20" class="input-style" %}
+ 
+	
+ 
+
+                <h2>
+                    طلبك
+                </h2>
+
+	
+                <table class="w-full my-4">
+                    <thead class="w-full">
+	
+                        <tr class="bg-orange-500 text-white ">
+                            <th class="text-right p-3">
+                                الطلب
+                            </th>
+                            <th class="text-left p-3">
+                                المجموع
+                            </th>
+                        </tr>
+	
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                            <tr class="mb-4">
+                                <td class="text-right p-4" style="direction:ltr">
+                                    {{ order.quantity }} X {{ order.product }}
+                                </td>
+                                <td class="text-left left p-4">
+                                    {{ total }}
+                                </td>
+
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+
+	
+                <button type="submit"
+                        class="text-white !m-auto bg-orange-500 hover:bg-orange-800 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-orange-600 dark:hover:bg-orange-700 focus:outline-none dark:focus:ring-orange-800 block">
+                    تأكيد الطلب
+                </button>
+	
+            </form>
+	
+        </div>
+    </section>
+{% endblock content %}

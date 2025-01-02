@@ -28,12 +28,8 @@
 			</div>
 		</div>
 
-		<table
-			class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 p-4"
-		>
-			<thead
-				class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
-			>
+		<table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 p-4">
+			<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
 				<tr class="bg-orange-400 text-white">
 					<th scope="col" class="px-16 py-3">
 						<span class="sr-only">Image</span>
@@ -53,14 +49,12 @@
 				>
 					<td class="p-4">
 						<img
-							src="{{item.product.image.url}}"
+							src="{{ item.product.image.url }}"
 							class="w-16 md:w-32 max-w-full max-h-full"
-							alt=" {{item.product.name}} "
+							alt=" {{ item.product.name }} "
 						/>
 					</td>
-					<td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-						{{item.product.name}}
-					</td>
+					<td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">{{item.product.name}}</td>
 					<td class="px-6 py-4">
 						<form method="post" class="flex items-center justify-end">
 							{% csrf_token %}
@@ -156,11 +150,9 @@
 		{% endif %} {% if total_price %}
 		<div class="text-center p-4">اجمالي السعر : {{ total_price }} ج.م</div>
 	</div>
-	<button
-		class="max-w-2xl block p-4 m-auto text-white bg-orange-400 rounded-lg mt-4"
-	>
+	<a href="{%url 'checkout'%}" class="max-w-xs block p-4 m-auto text-center text-white bg-orange-400 rounded-lg mt-4">
 		متابعة الطلب
-	</button>
+	</a>
 	{% else %}
 	<div class="text-center shadow-none">
 		<p>Your cart is empty.</p>
