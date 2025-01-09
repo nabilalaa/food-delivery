@@ -104,6 +104,14 @@ def checkout(request):
     total_price = sum(item.product.price *
                       item.quantity for item in cart_items)
 
+    orders = []
+    for i in (cart_items.values()):
+        meal = Meal.objects.get(id=i.get("product_id")).name
+        qunatity = i.get("quantity")
+        orders.append(f"{meal} X {qunatity}")
+    o = "\n".join(orders)
+    print()
+
     if request.method == "POST":
         print(request.POST)
         form = CheckoutForm(request.POST)
@@ -111,8 +119,9 @@ def checkout(request):
         if form.is_valid():
             Order.objects.create(
                 name=form.cleaned_data["name"], address=form.cleaned_data["address"],
-                city=form.cleaned_data["city"])
-            messages.success(request, "Hello world.")
+                city=form.cleaned_data["city"], phone=form.cleaned_data["phone"], email=form.cleaned_data[
+                    "email"], notes=form.cleaned_data["notes"], products=(o))
+            messages.success(request, "sent successfully")
         else:
             print("error")
 
