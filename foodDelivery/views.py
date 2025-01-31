@@ -8,13 +8,15 @@ from .models import *
 
 
 def index(request):
+    print(request.POST)
     category = request.POST.get("category")
     search = request.POST.get("search")
     if search:
         meals = Meal.objects.filter(name__icontains=search)
 
     elif category:
-        meals = Meal.objects.filter(category__name=category)
+        meals = Meal.objects.filter(category__name=str(category).strip())
+        print(meals)
 
     else:
         meals = Meal.objects.all()
