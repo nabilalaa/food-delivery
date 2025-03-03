@@ -4,29 +4,29 @@ from django.core.serializers import serialize
 from django.contrib.auth.models import AnonymousUser
 from .forms import CheckoutForm
 from django.contrib import messages
+from cart.models import *
 from .models import *
 
 
 def index(request):
-    print(request.POST)
     category = request.POST.get("category")
     search = request.POST.get("search")
     if search:
-        meals = Meal.objects.filter(name__icontains=search)
+        meals = Item.objects.filter(name__icontains=search)
 
     elif category:
-        meals = Meal.objects.filter(category__name=str(category).strip())
-        print(meals)
+        meals = Item.objects.filter(category__name=str(category).strip())
 
     else:
-        meals = Meal.objects.all()
+        meals = Item.objects.all()
 
-    if request.user != AnonymousUser():
+    if request.user.is_authenticated:
 
         cart_items = CartItem.objects.filter(user=request.user)
         cart_items_length = sum(item.quantity for item in cart_items)
     else:
-        return redirect("login")
+        cart_items_length = "0"
+
     context = {
         "meals": meals,
         "cart": cart_items_length,
@@ -38,29 +38,29 @@ def index(request):
 
 
 def getMeal(request, id):
-    meal = Meal.objects.get(id=id)
+    meal = Item.objects.get(id=id)
     context = {
         "meal": meal
     }
     return render(request, "modal.html", context)
 
 
-def view_cart(request):
+# def view_cart(request):
 
-    if request.user != AnonymousUser():
+#     if request.user != AnonymousUser():
 
-        cart_items = CartItem.objects.filter(
-            user=request.user).order_by("product__name")
-        total_price = sum(item.product.price *
-                          item.quantity for item in cart_items)
-    else:
-        return redirect("login")
+#         cart_items = CartItem.objects.filter(
+#             user=request.user).order_by("product__name")
+#         total_price = sum(item.product.price *
+#                           item.quantity for item in cart_items)
+#     else:
+#         return redirect("login")
 
-    return render(request, 'cart.html', {'cart_items': cart_items, 'total_price': total_price})
+#     return render(request, 'cart.html', {'cart_items': cart_items, 'total_price': total_price})
 
 
 def add_to_cart(request, meal_id):
-    product = Meal.objects.get(id=meal_id)
+    product = Item.objects.get(id=meal_id)
 
     if request.user != AnonymousUser():
 
@@ -73,31 +73,31 @@ def add_to_cart(request, meal_id):
         return redirect("login")
 
 
-def handelCart(request, meal_id):
-    product = Meal.objects.get(id=meal_id)
-    quantity = request.POST.get("quantity")
-    if request.user != AnonymousUser():
+# def handelCart(request, meal_id):
+#     product = Item.objects.get(id=meal_id)
+#     quantity = request.POST.get("quantity")
+#     if request.user != AnonymousUser():
 
-        cart_item, created = CartItem.objects.get_or_create(product=product,
-                                                            user=request.user)
-        cart_item.quantity = quantity
-        cart_item.save()
+#         cart_item, created = CartItem.objects.get_or_create(product=product,
+#                                                             user=request.user)
+#         cart_item.quantity = quantity
+#         cart_item.save()
 
-        cart_items = CartItem.objects.filter(
-            user=request.user).order_by("product__name")
-        total_price = sum(item.product.price *
-                          item.quantity for item in cart_items)
+#         cart_items = CartItem.objects.filter(
+#             user=request.user).order_by("product__name")
+#         total_price = sum(item.product.price *
+#                           item.quantity for item in cart_items)
 
-    else:
-        return redirect("login")
+#     else:
+#         return redirect("login")
 
-    return render(request, 'cart.html', {'cart_items': cart_items, 'total_price': total_price})
+#     return render(request, 'cart.html', {'cart_items': cart_items, 'total_price': total_price})
 
 
-def remove_from_cart(request, item_id):
-    cart_item = CartItem.objects.get(id=item_id)
-    cart_item.delete()
-    return redirect('view_cart')
+# def remove_from_cart(request, item_id):
+#     cart_item = CartItem.objects.get(id=item_id)
+#     cart_item.delete()
+#     return redirect('view_cart')
 
 
 def checkout(request):
@@ -108,14 +108,12 @@ def checkout(request):
 
     orders = []
     for i in (cart_items.values()):
-        meal = Meal.objects.get(id=i.get("product_id")).name
+        meal = Item.objects.get(id=i.get("product_id")).name
         qunatity = i.get("quantity")
         orders.append(f"{meal} X {qunatity}")
     o = "\n".join(orders)
-    print()
 
     if request.method == "POST":
-        print(request.POST)
         form = CheckoutForm(request.POST)
 
         if form.is_valid():
