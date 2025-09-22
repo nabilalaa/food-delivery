@@ -37,13 +37,15 @@ from django.contrib.auth.models import User
 
 
 class Order(models.Model):
-    name = models.CharField(max_length=50)
-    address = models.CharField(null=True)
-    city = models.CharField(null=True)
-    phone = models.IntegerField(null=True)
-    email = models.EmailField(null=True)
-    notes = models.TextField(null=True)
-    products = models.TextField(null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
+
+    name = models.CharField(max_length=50, null=True, blank=True)
+    address = models.CharField(max_length=100, null=True, blank=True)
+    city = models.CharField(max_length=100, null=True, blank=True)
+    phone = models.CharField(max_length=20, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
+    notes = models.TextField(null=True, blank=True)
+    products = models.TextField(null=True, blank=True)
 
     def __str__(self):
-        return self.name
+        return self.name if self.name else "test"

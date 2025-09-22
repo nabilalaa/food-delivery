@@ -1,101 +1,215 @@
 {% load static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="ar">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Document</title>
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap"
-			rel="stylesheet"
-		/>
-		<script
-			defer
-			src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"
-		></script>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap"
+            rel="stylesheet"
+        />
+        <script
+            defer
+            src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"
+        ></script>
 
-		{% tailwind_css %}
-	</head>
-	<body x-data="{'isModalOpen': true}" x-on:keydown.escape="isModalOpen=false">
-		<nav
-			class="bg-white border-gray-200 dark:bg-gray-900"
-			x-data="{'dropdown':false}"
-		>
-			<div
-				class="capitalize max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
-			>
-				<a href="{%url 'home'%}">food delivery</a>
+        {% tailwind_css %}
+    </head>
+    <body
+        x-data="{'isModalOpen': true}"
+        x-on:keydown.escape="isModalOpen=false"
+    >
+        {% comment %}
+        <nav
+            class="bg-white border-gray-200 dark:bg-gray-900"
+            x-data="{'dropdown':false}"
+        >
+            <div
+                class="capitalize max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
+            >
+                <a href="{%url 'home'%}">E Menu</a>
 
-				<div
-					class="flex relative items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse"
-				>
-					<button
-						@click="dropdown= !dropdown"
-						class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-					>
-						<span class="sr-only">Open user menu</span>
-						<img
-							class="w-8 h-8 rounded-full"
-							src="/docs/images/people/profile-picture-3.jpg"
-							alt="user photo"
-						/>
-					</button>
-					<!-- Dropdown menu -->
-					<div
-						x-show="dropdown"
-						@click.outside="dropdown=false"
-						x-cloak
-						class="z-50 my-4 top-[65%] -left-5 absolute text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"
-					>
-						<div class="px-4 py-3">
-							<span class="block text-sm text-gray-900 dark:text-white"
-								>{{user.username}}</span
-							>
-							<span
-								class="block text-sm text-gray-500 truncate dark:text-gray-400"
-								>{{user.email}}</span
-							>
-						</div>
-						<ul class="py-2" aria-labelledby="user-menu-button">
-							<li>
-								<a
-									href="{%url 'home'%}"
-									class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-									>Home</a
-								>
-							</li>
-							<li>
-								<a
-									href="#"
-									class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-									>Profile</a
-								>
-							</li>
-							<li>
-								<a
-									href="{%url 'logout'%}"
-									class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-									>Sign out</a
-								>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</nav>
+                <div
+                    class="flex relative items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse"
+                >
+                    {% if user.is_authenticated %}
 
-		{% block content %} {% endblock content %}
-		<script
-			src="https://unpkg.com/htmx.org@2.0.2"
-			integrity="sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ"
-			crossorigin="anonymous"
-		></script>
-		<script>
-			document.body.addEventListener("htmx:configRequest", function (event) {
-				event.detail.parameters["X-CSRFToken"] = "{{csrf_token}}"; // add a new parameter into the mix
-			});
-		</script>
-	</body>
+                    <button
+                        @click="dropdown= !dropdown"
+                        class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                    >
+                        <span class="sr-only">Open user menu</span>
+                        <img
+                            class="w-8 h-8 rounded-full"
+                            src="/docs/images/people/profile-picture-3.jpg"
+                            alt="user photo"
+                        />
+                    </button>
+                    <!-- Dropdown menu -->
+                    <div
+                        x-show="dropdown"
+                        @click.outside="dropdown=false"
+                        x-cloak
+                        class="z-50 my-4 top-[65%] -left-5 absolute text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"
+                    >
+                        <div class="px-4 py-3">
+                            <span
+                                class="block text-sm text-gray-900 dark:text-white"
+                                >{{user.username}}</span
+                            >
+                            <span
+                                class="block text-sm text-gray-500 truncate dark:text-gray-400"
+                                >{{user.email}}</span
+                            >
+                        </div>
+                        <ul class="py-2" aria-labelledby="user-menu-button">
+                            <li>
+                                <a
+                                    href="{%url 'menu' user.username%}"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                    >Home</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="/admin"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                    >dashboard</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="{%url 'logout'%}"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                    >Sign out</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    {% else %}
+                    <a
+                        href="{% url 'login'%}"
+                        class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-200"
+                    >
+                        Login
+                    </a>
+                    <a
+                        href="{% url 'register'%}"
+                        class="px-4 py-2 !mr-2 rounded-lg bg-indigo-600 text-white hover:indigo-700"
+                    >
+                        Sign Up
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+        {% endcomment %} {% if user.is_authenticated %}
+        <nav
+            class="bg-white shadow-md fixed w-full top-0 left-0 z-50"
+            x-data="{'dropdown':false}"
+        >
+            <div class="container">
+                <div
+                    class="mx-auto px-6 py-4 flex flex-row-reverse items-center justify-between"
+                >
+                    <!-- Logo -->
+                    <a
+                        href="{%url 'home'%}"
+                        class="text-2xl font-bold text-indigo-600"
+                        >E-Menu</a
+                    >
+                    <div class="relative">
+                        {% if user.is_authenticated %}
+
+                        <button
+                            @click="dropdown= !dropdown"
+                            class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                        >
+                            <span class="sr-only">Open user menu</span>
+                            <img
+                                class="w-8 h-8 rounded-full"
+                                src="/docs/images/people/profile-picture-3.jpg"
+                                alt="user photo"
+                            />
+                        </button>
+                        <!-- Dropdown menu -->
+                        <div
+                            x-show="dropdown"
+                            @click.outside="dropdown=false"
+                            x-cloak
+                            class="z-50 my-4 absolute text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"
+                        >
+                            <div class="px-4 py-3">
+                                <span
+                                    class="block text-sm text-gray-900 dark:text-white"
+                                    >{{user.username}}</span
+                                >
+                                <span
+                                    class="block text-sm text-gray-500 truncate dark:text-gray-400"
+                                    >{{user.email}}</span
+                                >
+                            </div>
+                            <ul
+                                class="py-2 capitalize"
+                                aria-labelledby="user-menu-button"
+                            >
+                                <li>
+                                    <a
+                                        href="{%url 'menu' user.username%}"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                        >Your Menu</a
+                                    >
+                                </li>
+                                <li>
+                                    <a
+                                        href="/admin"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                        >dashboard</a
+                                    >
+                                </li>
+                                <li>
+                                    <a
+                                        href="{%url 'logout'%}"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                        >Sign out</a
+                                    >
+                                </li>
+                            </ul>
+                        </div>
+                        {% else %}
+                        <a
+                            href="{% url 'login'%}"
+                            class="px-4 py-2 !mr-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-200"
+                        >
+                            Login
+                        </a>
+                        <a
+                            href="{% url 'register'%}"
+                            class="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:indigo-700"
+                        >
+                            Sign Up
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </nav>
+        {% endif %} {% block content %} {% endblock content %}
+        <script
+            src="https://unpkg.com/htmx.org@2.0.2"
+            integrity="sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ"
+            crossorigin="anonymous"
+        ></script>
+        <script>
+            document.body.addEventListener(
+                "htmx:configRequest",
+                function (event) {
+                    event.detail.parameters["X-CSRFToken"] = "{{csrf_token}}"; // add a new parameter into the mix
+                }
+            );
+        </script>
+    </body>
 </html>

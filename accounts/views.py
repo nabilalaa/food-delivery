@@ -1,12 +1,10 @@
 from django.shortcuts import render, HttpResponse, redirect
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User ,Group
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth import views
 
 
-def index(request):
-    return render(request, "index.html")
 
 
 def register(request):
@@ -19,11 +17,19 @@ def register(request):
         if request.method == "POST":
 
             if password == confirm_password and User.DoesNotExist:
-                User.objects.create_user(
+                user = User.objects.create_user(
                     username=username, email=email, password=password)
+                group = Group.objects.get(name="saas") 
+                user.is_staff = True
+                user.groups.add(group)
+                user.save()
+
+                
                 messages.success(
                     request, message="register has been sucessfully")
-                redirect("login")
+                return redirect("login")
+
+                
 
             else:
                 messages.error(request, message="somthing wrong")

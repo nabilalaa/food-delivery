@@ -18,8 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path("", include("foodDelivery.urls")),
+    path('admin/', admin.site.urls,name="admin"),
+    path("", include("foodDelivery.urls"), name="dashboard"),
     path("", include("accounts.urls")),
     path("", include("cart.urls")),
     path("__reload__/", include("django_browser_reload.urls")),

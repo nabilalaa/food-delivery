@@ -1,201 +1,437 @@
-{% extends "base.html" %}
-{% block content %}
-    <section class="relative">
-        {% if user.is_authenticated %}
-            <a href="{% url 'view_cart' %}"
-               class="absolute z-50 top-1/2 p-4 bg-orange-600 rounded-xl flex items-center text-white">
-	
-                <svg class="w-8 h-8 text-white"
-                     aria-hidden="true"
-                     xmlns="http://www.w3.org/2000/svg"
-                     width="24"
-                     height="24"
-                     fill="currentColor"
-                     viewBox="0 0 24 24">
-	
-                    <path fill-rule="evenodd" d="M4 4a1 1 0 0 1 1-1h1.5a1 1 0 0 1 .979.796L7.939 6H19a1 1 0 0 1 .979 1.204l-1.25 6a1 1 0 0 1-.979.796H9.605l.208 1H17a3 3 0 1 1-2.83 2h-2.34a3 3 0 1 1-4.009-1.76L5.686 5H5a1 1 0 0 1-1-1Z" clip-rule="evenodd" />
-	
-                </svg>
-	
-                <div class="mt-1">
-                    {{ cart }}
-                </div>
-            </a>
-        {% endif %}
-	
-        <div id="modal">
-        </div>
-	
-        <div class="container">
-	
-            <h1 class="text-2xl font-bold mb-4 p-4 text-center">
-                اضافة الطلبات
+{% extends 'base.html'%} {% block content %}
+
+<!-- Ultra Modern Hero Section -->
+<section
+    class="relative overflow-hidden min-h-screen flex items-center bg-gradient-to-br from-slate-950 via-indigo-950 to-purple-950"
+>
+    <!-- Animated Background Grid -->
+    <div class="absolute inset-0 opacity-20">
+        <div
+            class="absolute inset-0"
+            style="
+                background-image: linear-gradient(
+                        rgba(255, 255, 255, 0.03) 1px,
+                        transparent 1px
+                    ),
+                    linear-gradient(
+                        90deg,
+                        rgba(255, 255, 255, 0.03) 1px,
+                        transparent 1px
+                    );
+                background-size: 50px 50px;
+                animation: grid-move 20s linear infinite;
+            "
+        ></div>
+    </div>
+
+    <!-- Dynamic Gradient Orbs -->
+    <div class="absolute inset-0 overflow-hidden">
+        <div
+            class="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob"
+        ></div>
+        <div
+            class="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-r from-pink-400 to-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000"
+        ></div>
+        <div
+            class="absolute top-40 left-1/2 w-80 h-80 bg-gradient-to-r from-orange-400 to-yellow-500 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000"
+        ></div>
+    </div>
+
+    <!-- Glassmorphism Container -->
+    <div
+        class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20"
+    >
+        <div class="text-center">
+            <!-- Floating Badge -->
+            <div
+                class="inline-flex items-center px-6 py-3 mb-8 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white/90 text-sm font-medium shadow-2xl hover:bg-white/20 transition-all duration-300 cursor-pointer"
+            >
+                <span
+                    class="w-2 h-2 bg-green-400 rounded-full mr-3 animate-pulse"
+                ></span>
+                🚀 Next-Gen Menu Builder - Now Live
+            </div>
+
+            <!-- 3D Animated Title -->
+            <h1 class="relative mb-8">
+                <span
+                    class="block text-5xl md:text-7xl lg:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-blue-300 leading-tight tracking-tight transform hover:scale-105 transition-transform duration-500"
+                >
+                    Create
+                </span>
+                <span
+                    class="block text-5xl md:text-7xl lg:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-pink-400 to-purple-400 leading-tight tracking-tight transform hover:scale-105 transition-transform duration-500 animation-delay-200"
+                >
+                    Digital Menus
+                </span>
+                <span
+                    class="block text-4xl md:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 leading-tight tracking-tight transform hover:scale-105 transition-transform duration-500 animation-delay-400"
+                >
+                    Instantly
+                </span>
+
+                <!-- Floating Elements Around Title -->
+                <div
+                    class="absolute -top-4 -left-4 w-8 h-8 bg-gradient-to-r from-pink-400 to-purple-500 rounded-lg rotate-45 opacity-60 animate-spin-slow"
+                ></div>
+                <div
+                    class="absolute top-1/2 -right-8 w-6 h-6 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full opacity-60 animate-bounce"
+                ></div>
+                <div
+                    class="absolute -bottom-4 left-1/4 w-4 h-4 bg-gradient-to-r from-orange-400 to-yellow-500 rounded-full opacity-60 animate-pulse"
+                ></div>
             </h1>
-	
-            <div class="search flex justify-between gap-5 items-center relative mb-4">
-	
-                <form class="w-full items-center flex" method="post">
-                    {% csrf_token %}
-	
-                    <label for="default-search"
-                           class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">
-                        Search
-                    </label>
-	
-                    <div class="relative w-full">
-	
-                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-	
-                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"
-                                 aria-hidden="true"
-                                 xmlns="http://www.w3.org/2000/svg"
-                                 fill="none"
-                                 viewBox="0 0 20 20">
-	
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-	
-                            </svg>
-	
-                        </div>
-	
-                        <input type="search"
-                               hx-post="{% url 'home' %}"
-                               hx-target="body"
-                               hx-trigger="change"
-                               id="default-search"
-                               name="search"
-                               class="text-right block w-full p-4 pl-10 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-mainColor focus:border-mainColor dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" />
-	
-                    </div>
-	
-                    <button type="button"
-                            class="mx-4 text-white bg-orange-400 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-lg px-4 py-2 dark:bg-orange-600 dark:focus:ring-orange-800">
-                        بحث
-	
-                    </button>
-	
-                    <select class="bg-orange-50 border border-orange-300 text-orange-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-64 p-2.5 dark:bg-orange-700 dark:border-orange-600 dark:placeholder-orange-400 dark:text-white dark:focus:ring-orange-500 dark:focus:border-orange-500 text-left"
-                            name="category"
-                            hx-post="{% url 'home' %}"
-                            hx-target="body"
-                            hx-trigger="change">
-	
-                        <option selected disabled>
-                            التصنيفات
-                        </option>
-	
-                        {% for category in categories %}
 
-	
-                            <option value=" {{ category.name }} ">
-                                {{ category.name }}
-                            </option>
+            <!-- Modern Subtitle with Typewriter Effect -->
+            <p
+                class="text-xl md:text-2xl text-gray-300/90 mb-12 max-w-4xl mx-auto leading-relaxed font-light"
+            >
+                Revolutionary AI-powered menu generator that transforms your
+                restaurant's digital presence.
+                <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400 font-semibold"
+                >
+                    Build, customize, and deploy in seconds.
+                </span>
+            </p>
 
-	
-                        {% endfor %}
-	
-                    </select>
-	
-                </form>
-	
+            <!-- Futuristic CTA Buttons -->
+            <div
+                class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-20"
+            >
+                {% if user.is_authenticated %}
+                <a
+                    href="{% url 'menu' user.username %}"
+                    class="group relative px-10 py-5 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 text-white font-bold rounded-2xl text-lg overflow-hidden transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-cyan-500/25"
+                >
+                    <span class="relative z-10 flex items-center">
+                        <svg
+                            class="w-5 h-5 mr-2"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M13 10V3L4 14h7v7l9-11h-7z"
+                            ></path>
+                        </svg>
+                        Launch My Menu
+                    </span>
+                    <div
+                        class="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-500 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    ></div>
+                    <div
+                        class="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"
+                    ></div>
+                </a>
+                <a
+                    href="/admin"
+                    class="group px-10 py-5 bg-white/10 backdrop-blur-md border-2 border-white/30 text-white font-semibold rounded-2xl text-lg hover:bg-white/20 hover:border-white/50 transition-all duration-300 shadow-xl"
+                >
+                    <span class="flex items-center">
+                        <svg
+                            class="w-5 h-5 mr-2"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                            ></path>
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                            ></path>
+                        </svg>
+                        Dashboard
+                    </span>
+                </a>
+                {% else %}
+                <a
+                    href="{% url 'register' %}"
+                    class="group relative px-10 py-5 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 text-white font-bold rounded-2xl text-lg overflow-hidden transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-cyan-500/25"
+                >
+                    <span class="relative z-10 flex items-center">
+                        <svg
+                            class="w-5 h-5 mr-2"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M13 10V3L4 14h7v7l9-11h-7z"
+                            ></path>
+                        </svg>
+                        Start Building Free
+                    </span>
+                    <div
+                        class="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-500 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    ></div>
+                    <div
+                        class="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"
+                    ></div>
+                </a>
+                <a
+                    href="{% url 'login' %}"
+                    class="group px-10 py-5 bg-white/10 backdrop-blur-md border-2 border-white/30 text-white font-semibold rounded-2xl text-lg hover:bg-white/20 hover:border-white/50 transition-all duration-300 shadow-xl"
+                >
+                    <span class="flex items-center">
+                        <svg
+                            class="w-5 h-5 mr-2"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+                            ></path>
+                        </svg>
+                        Sign In
+                    </span>
+                </a>
+                {% endif %}
             </div>
 
-	
-            <div class="relative items w-full rounded-md border overflow-y-scroll scroll h-96">
-	
-                {% for meal in meals %}
-	
-                    <div class="absolute opacity-0 invisible transition top-0 bottom-0 w-full bg-orange-400 flex justify-center items-center loading htmx-indicator">
-	
-                        <div role="status">
-	
-                            <svg aria-hidden="true"
-                                 class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-orange-600"
-                                 viewBox="0 0 100 101"
-                                 fill="none"
-                                 xmlns="http://www.w3.org/2000/svg">
-	
-                                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
-	
-                                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
-	
-                            </svg>
-                            <span class="sr-only">Loading...</span>
-	
+            <!-- 3D Feature Cards -->
+            <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-20">
+                <div
+                    class="group relative p-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl hover:bg-white/10 hover:border-white/20 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-cyan-500/10"
+                >
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    ></div>
+                    <div class="relative z-10">
+                        <div
+                            class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-2xl flex items-center justify-center text-3xl shadow-lg transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300"
+                        >
+                            ⚡
                         </div>
-	
+                        <h3
+                            class="text-2xl font-bold text-white mb-4 group-hover:text-cyan-300 transition-colors duration-300"
+                        >
+                            AI-Powered Speed
+                        </h3>
+                        <p class="text-gray-300/90 leading-relaxed">
+                            Generate professional menus in under 30 seconds
+                            using advanced AI algorithms and smart templates.
+                        </p>
                     </div>
-	
-                    <div class="item flex p-4 justify-between items-center border-b last-of-type:border-0 md:flex-row flex-col">
-	
-                        <div class="info flex">
-	
-                            <div class="ml-4">
-                                {{ meal.name }}
-                            </div>
-	
-                            <div>
-                                {{ meal.price }} ج.م
-                            </div>
-	
+                </div>
+
+                <div
+                    class="group relative p-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl hover:bg-white/10 hover:border-white/20 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-purple-500/10"
+                >
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    ></div>
+                    <div class="relative z-10">
+                        <div
+                            class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-purple-400 to-pink-500 rounded-2xl flex items-center justify-center text-3xl shadow-lg transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300"
+                        >
+                            🎨
                         </div>
-	
-                        <div class="flex font-semibold">
- 
-                            {% if user.is_authenticated %}
-                                <a hx-get="{% url 'add_to_cart' meal.id %}"
-                                   hx-target="body"
-                                   hx-indicator=".loading"
-                                   class="text-white cursor-pointer px-6 py-4 rounded-lg bg-orange-400 hover:bg-orange-600 transition">
-                                    اضافة
-                                </a>
-                            {% else %}
-                                <a href="{% url 'login' %}"
-                                   class="text-white cursor-pointer px-6 py-4 rounded-lg bg-orange-400 hover:bg-orange-600 transition">
-                                    اضافة
-                                </a>
-                            {% endif %}
- 
- 
- 
-                            <a hx-get="{% url 'getMeal' meal.id %}"
-                               hx-target="#modal"
-                               x-on:click="isModalOpen=true"
-                               hx-indicator="#loading"
-                               x-cloak
-                               class="text-white cursor-pointer px-6 py-4 rounded-lg bg-orange-400 hover:bg-orange-600 transition mr-4">
-	
-                                <svg class="w-6 h-6 text-white"
-                                     aria-hidden="true"
-                                     xmlns="http://www.w3.org/2000/svg"
-                                     fill="none"
-                                     viewBox="0 0 20 14">
-	
-                                    <g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-	
-                                    <path d="M10 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-	
-                                    <path d="M10 13c4.97 0 9-2.686 9-6s-4.03-6-9-6-9 2.686-9 6 4.03 6 9 6Z" />
-	
-                                    </g>
-	
-                                </svg>
-                            </a>
-	
-                        </div>
-	
+                        <h3
+                            class="text-2xl font-bold text-white mb-4 group-hover:text-purple-300 transition-colors duration-300"
+                        >
+                            Infinite Customization
+                        </h3>
+                        <p class="text-gray-300/90 leading-relaxed">
+                            Unlimited design possibilities with real-time
+                            preview, custom themes, and brand integration.
+                        </p>
                     </div>
-                {% empty %}
-	
-                    <p class="p-4">
-                        لايوجد
-                    </p>
-	
-                {% endfor %}
-	
+                </div>
+
+                <div
+                    class="group relative p-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl hover:bg-white/10 hover:border-white/20 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-emerald-500/10"
+                >
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    ></div>
+                    <div class="relative z-10">
+                        <div
+                            class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl flex items-center justify-center text-3xl shadow-lg transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300"
+                        >
+                            📱
+                        </div>
+                        <h3
+                            class="text-2xl font-bold text-white mb-4 group-hover:text-emerald-300 transition-colors duration-300"
+                        >
+                            Universal Compatibility
+                        </h3>
+                        <p class="text-gray-300/90 leading-relaxed">
+                            Perfect on every device with responsive design, PWA
+                            support, and offline capabilities.
+                        </p>
+                    </div>
+                </div>
             </div>
-	
+
+            <!-- Animated Stats Counter -->
+            <div
+                class="relative p-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl max-w-5xl mx-auto"
+            >
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-purple-500/5 to-pink-500/5 rounded-3xl"
+                ></div>
+                <div
+                    class="relative z-10 grid grid-cols-2 md:grid-cols-4 gap-8"
+                >
+                    <div class="text-center group cursor-pointer">
+                        <div
+                            class="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-2 group-hover:scale-110 transition-transform duration-300"
+                        >
+                            10K+
+                        </div>
+                        <div class="text-gray-400 font-medium">
+                            Menus Created
+                        </div>
+                    </div>
+                    <div class="text-center group cursor-pointer">
+                        <div
+                            class="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 mb-2 group-hover:scale-110 transition-transform duration-300"
+                        >
+                            5K+
+                        </div>
+                        <div class="text-gray-400 font-medium">
+                            Happy Restaurants
+                        </div>
+                    </div>
+                    <div class="text-center group cursor-pointer">
+                        <div
+                            class="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-500 mb-2 group-hover:scale-110 transition-transform duration-300"
+                        >
+                            4.9★
+                        </div>
+                        <div class="text-gray-400 font-medium">User Rating</div>
+                    </div>
+                    <div class="text-center group cursor-pointer">
+                        <div
+                            class="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 mb-2 group-hover:scale-110 transition-transform duration-300"
+                        >
+                            24/7
+                        </div>
+                        <div class="text-gray-400 font-medium">AI Support</div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </section>
+    </div>
+
+    <!-- Particle System -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div
+            class="absolute top-1/4 left-1/4 w-1 h-1 bg-white rounded-full opacity-60 animate-twinkle"
+        ></div>
+        <div
+            class="absolute top-3/4 left-3/4 w-1 h-1 bg-cyan-400 rounded-full opacity-60 animate-twinkle animation-delay-1000"
+        ></div>
+        <div
+            class="absolute top-1/2 left-1/6 w-1 h-1 bg-purple-400 rounded-full opacity-60 animate-twinkle animation-delay-2000"
+        ></div>
+        <div
+            class="absolute top-1/6 right-1/4 w-1 h-1 bg-pink-400 rounded-full opacity-60 animate-twinkle animation-delay-3000"
+        ></div>
+        <div
+            class="absolute bottom-1/4 right-1/6 w-1 h-1 bg-emerald-400 rounded-full opacity-60 animate-twinkle animation-delay-4000"
+        ></div>
+    </div>
+</section>
+
+<!-- Custom Animations -->
+<style>
+    @keyframes grid-move {
+        0% {
+            transform: translate(0, 0);
+        }
+        100% {
+            transform: translate(50px, 50px);
+        }
+    }
+
+    @keyframes blob {
+        0%,
+        100% {
+            transform: translate(0px, 0px) scale(1);
+        }
+        33% {
+            transform: translate(30px, -50px) scale(1.1);
+        }
+        66% {
+            transform: translate(-20px, 20px) scale(0.9);
+        }
+    }
+
+    @keyframes spin-slow {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes twinkle {
+        0%,
+        100% {
+            opacity: 0.3;
+            transform: scale(1);
+        }
+        50% {
+            opacity: 1;
+            transform: scale(1.5);
+        }
+    }
+
+    .animate-blob {
+        animation: blob 7s infinite;
+    }
+
+    .animation-delay-2000 {
+        animation-delay: 2s;
+    }
+
+    .animation-delay-4000 {
+        animation-delay: 4s;
+    }
+
+    .animation-delay-200 {
+        animation-delay: 0.2s;
+    }
+
+    .animation-delay-400 {
+        animation-delay: 0.4s;
+    }
+
+    .animation-delay-1000 {
+        animation-delay: 1s;
+    }
+
+    .animation-delay-3000 {
+        animation-delay: 3s;
+    }
+
+    .animate-spin-slow {
+        animation: spin-slow 8s linear infinite;
+    }
+
+    .animate-twinkle {
+        animation: twinkle 3s ease-in-out infinite;
+    }
+</style>
 
 {% endblock content %}
